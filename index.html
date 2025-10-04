@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Galerie RP FiveM</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(-45deg, #3b0b8a, #7a2ff5, #ff0080, #00ffff);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+@keyframes gradientBG {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+h2{margin-top:10px;}
+.container{padding:20px;}
+.stats{display:flex; justify-content:center; gap:15px; margin-bottom:20px;}
+.category-buttons{margin-bottom:20px;}
+.category-btn{
+  margin:0 5px; padding:8px 15px;
+  border:none; border-radius:20px;
+  cursor:pointer; background:#ff7b00; color:#fff; font-weight:600; transition:0.2s;
+}
+.category-btn:hover, .category-btn.active { background:#ffae3c; transform:scale(1.05); }
+
+.gallery-container{display:flex; flex-direction:column; gap:40px;}
+.category-section{background: rgba(255,255,255,0.1); border-radius:20px; padding:15px;}
+.photo-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; justify-items:center;}
+.photo-item{position: relative; border-radius:12px; overflow:hidden; background: rgba(0,0,0,0.3); padding:5px; transition: transform 0.2s;}
+.photo-item:hover{transform: scale(1.03);}
+.photo-item img{width:100%; height:auto; border-radius:10px; cursor:pointer;}
+.photo-actions button{margin:5px; padding:5px 8px; border:none; border-radius:8px; cursor:pointer; background:#ff7b00; color:#fff; transition:0.2s;}
+.photo-actions button:hover{background:#ffae3c;}
+
+/* Lightbox */
+.lightbox{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; flex-direction:column; z-index:9999;}
+.lightbox img{max-width:90%; max-height:80%; border-radius:12px;}
+.lightbox .close{position:absolute; top:30px; right:50px; font-size:40px; cursor:pointer; color:white;}
+.lightbox .caption{margin-top:15px; font-size:1.2rem; text-align:center;}
+
+/* Admin floating button & auth button */
+.top-buttons{position: fixed; top: 20px; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; z-index: 1000;}
+.admin-fab, #auth-btn{background: #ff7b00; color: white; font-size:18px; border:none; border-radius:50px; padding:10px 20px; cursor:pointer; box-shadow:0 0 15px rgba(0,0,0,0.3); transition:0.2s;}
+.admin-fab:hover, #auth-btn:hover{background:#ffae3c; transform:scale(1.05);}
+
+/* Admin panel */
+.admin-panel{position: fixed; top: 60px; left: 20px; width: 320px; background: rgba(25,25,25,0.95); border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.6); padding:15px 20px; display:none; flex-direction:column; color:#fff; z-index:999;}
+.admin-panel h3{text-align:center; margin-bottom:10px; color:#ff8c00;}
+.admin-panel input, .admin-panel select, .admin-panel button{width:100%; margin-bottom:10px; padding:8px; border-radius:8px; border:none; font-size:14px;}
+.admin-panel input{background:#2a2a2a; color:#fff;}
+.admin-panel button{background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s;}
+.admin-panel button:hover{background:#ffae3c;}
+
+/* Comments modal */
+#comments-modal{display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(25,25,25,0.95); padding:20px; border-radius:15px; width:350px; max-height:70%; overflow-y:auto; z-index:10000;}
+#comments-modal h3{margin-top:0; color:#ffae3c; text-align:center;}
+#comments-list{margin-bottom:10px; text-align:left;}
+#comments-list div{border-bottom:1px solid #444; padding:5px 0;}
+#comments-modal input{width:100%; padding:6px; margin-bottom:6px; border-radius:8px; border:none; background:#2a2a2a; color:#fff;}
+#comments-modal button{width:100%; padding:8px; border:none; border-radius:8px; background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s;}
+#comments-modal button:hover{background:#ffae3c;}
+#comments-close{position:absolute; top:10px; right:15px; font-size:25px; cursor:pointer;}
+
+/* Register/Login modal */
+#auth-modal{display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(25,25,25,0.95); padding:20px; border-radius:15px; width:350px; max-height:80%; overflow-y:auto; z-index:10000;}
+#auth-modal h3{margin-top:0; color:#ffae3c; text-align:center;}
+#auth-modal input{width:100%; padding:6px; margin-bottom:6px; border-radius:8px; border:none; background:#2a2a2a; color:#fff;}
+#auth-modal button{width:100%; padding:8px; border:none; border-radius:8px; background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s; margin-bottom:5px;}
+#auth-modal button:hover{background:#ffae3c;}
+#auth-modal span.switch-auth{cursor:pointer; color:#ffae3c; text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<!-- Top buttons -->
+<div class="top-buttons">
+  <button class="admin-fab" id="admin-btn">🔐 Admin</button>
+</div>
+
+<div class="container">
+<h2>📸 Galerie Photo Fivem Octo </h2>
+
+
+
+<div class="category-buttons" id="category-buttons"></div>
+
+<div id="gallery-container" class="gallery-container"></div>
+
+<!-- Admin panel -->
+<div class="admin-panel" id="admin-panel">
+  <h3>🛠️ Panel Admin</h3>
+  <input type="password" id="admin-pass" placeholder="Code admin">
+  <button id="login-admin">Se connecter</button>
+
+  <div id="admin-tools" style="display:none;">
+    <h4>➕ Ajouter Catégorie</h4>
+    <input type="text" id="new-category" placeholder="Nom de la catégorie">
+    <button onclick="addCategory()">Ajouter</button>
+    <button onclick="deleteCategory()">Supprimer catégorie</button>
+    <select id="delete-category"></select>
+
+    <h4>📸 Ajouter Photo par URL</h4>
+    <input type="text" id="photo-url" placeholder="Lien direct de l'image">
+    <input type="text" id="photo-alt" placeholder="Nom de la photo">
+    <input type="text" id="photo-description" placeholder="Description">
+    <select id="photo-category"></select>
+    <button onclick="addPhotoByUrl()">Ajouter la photo</button>
+    <button onclick="deletePhoto()">Supprimer photo</button>
+    <select id="delete-photo"></select>
+
+    <h4>📊 Stats</h4>
+    <button onclick="resetStats()">Réinitialiser stats</button>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <span class="close" id="lightbox-close">&times;</span>
+  <img id="lightbox-img" src="">
+  <div class="caption" id="lightbox-caption"></div>
+</div>
+
+
+
+<script src="script.js"></script>
+</body>
+
+<!-- Global message modal -->
+<div id="site-message-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+     background:rgba(0,0,0,0.85); z-index:10001; justify-content:center; align-items:center; flex-direction:column;">
+  <div style="background:#222; padding:20px; border-radius:15px; width:300px; max-width:90%; text-align:center; color:white;">
+    <span id="site-message-close" style="position:absolute; top:10px; right:15px; font-size:25px; cursor:pointer;">&times;</span>
+    <div id="site-message-content" style="margin-top:15px; font-size:1.1rem;"></div>
+    <button id="site-message-ok" style="margin-top:15px; padding:8px 12px; border:none; border-radius:8px; background:#ff7b00; color:white; cursor:pointer;">OK</button>
+  </div>
+</div>
+
+</html>
