@@ -60,37 +60,16 @@ h2{margin-top:10px;}
 .admin-panel input{background:#2a2a2a; color:#fff;}
 .admin-panel button{background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s;}
 .admin-panel button:hover{background:#ffae3c;}
-
-/* Comments modal */
-#comments-modal{display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(25,25,25,0.95); padding:20px; border-radius:15px; width:350px; max-height:70%; overflow-y:auto; z-index:10000;}
-#comments-modal h3{margin-top:0; color:#ffae3c; text-align:center;}
-#comments-list{margin-bottom:10px; text-align:left;}
-#comments-list div{border-bottom:1px solid #444; padding:5px 0;}
-#comments-modal input{width:100%; padding:6px; margin-bottom:6px; border-radius:8px; border:none; background:#2a2a2a; color:#fff;}
-#comments-modal button{width:100%; padding:8px; border:none; border-radius:8px; background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s;}
-#comments-modal button:hover{background:#ffae3c;}
-#comments-close{position:absolute; top:10px; right:15px; font-size:25px; cursor:pointer;}
-
-/* Register/Login modal */
-#auth-modal{display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(25,25,25,0.95); padding:20px; border-radius:15px; width:350px; max-height:80%; overflow-y:auto; z-index:10000;}
-#auth-modal h3{margin-top:0; color:#ffae3c; text-align:center;}
-#auth-modal input{width:100%; padding:6px; margin-bottom:6px; border-radius:8px; border:none; background:#2a2a2a; color:#fff;}
-#auth-modal button{width:100%; padding:8px; border:none; border-radius:8px; background:#ff7b00; color:#fff; cursor:pointer; transition:0.2s; margin-bottom:5px;}
-#auth-modal button:hover{background:#ffae3c;}
-#auth-modal span.switch-auth{cursor:pointer; color:#ffae3c; text-decoration:underline;}
 </style>
 </head>
 <body>
 
-<!-- Top buttons -->
 <div class="top-buttons">
   <button class="admin-fab" id="admin-btn">🔐 Admin</button>
 </div>
 
 <div class="container">
-<h2>📸 Galerie Photo Fivem Octo </h2>
-
-
+<h2>📸 Galerie Photo Fivem Octo</h2>
 
 <div class="category-buttons" id="category-buttons"></div>
 
@@ -119,7 +98,7 @@ h2{margin-top:10px;}
     <select id="delete-photo"></select>
 
     <h4>📊 Stats</h4>
-    <button onclick="resetStats()">Réinitialiser stats</button>
+    <button id="reset-gallery">Réinitialiser stats</button>
   </div>
 </div>
 
@@ -130,12 +109,7 @@ h2{margin-top:10px;}
   <div class="caption" id="lightbox-caption"></div>
 </div>
 
-
-
-<script src="script.js"></script>
-</body>
-
-<!-- Global message modal -->
+<!-- Site message modal -->
 <div id="site-message-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
      background:rgba(0,0,0,0.85); z-index:10001; justify-content:center; align-items:center; flex-direction:column;">
   <div style="background:#222; padding:20px; border-radius:15px; width:300px; max-width:90%; text-align:center; color:white;">
@@ -145,4 +119,6 @@ h2{margin-top:10px;}
   </div>
 </div>
 
+<script src="script.js"></script>
+</body>
 </html>
